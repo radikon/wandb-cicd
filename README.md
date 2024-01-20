@@ -10,3 +10,5 @@ This repo contains code accompanying W&B CI/CD for Machine Learning (GitOps) cou
 - Integrate Github API in your actions
 - Integrate W&B API and programmatic reports into ML workflows
 - Promote models to the registry with W&B
+
+These are resources for the W&B ci/cd course.
