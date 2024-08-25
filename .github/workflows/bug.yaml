@@ -42,8 +42,8 @@ jobs:
         api.issues.add_labels(issue_number=os.environ['NUMBER'], labels=['bug'])
       env:
         NUMBER: ${{ github.event.issue.number }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        REPO: ${{ github.repository }}
+        #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #REPO: ${{ github.repository }}
 
 
     # run: |
