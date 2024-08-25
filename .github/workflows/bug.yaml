@@ -33,10 +33,10 @@ jobs:
       run: |
         import os
         from ghapi.core import GhApi
-        owner = "radikon"
-        repo = "wandb-cicd"
+        #owner = "radikon"
+        #repo = "wandb-cicd"
         #owner.repo = os.environ['REPO'].split('/')
-        api = GhApi(owner=owner, repo=repo)
+        api = GhApi(owner=radikon, repo=wandb-cicd)
         api.issues.add_labels(issue_number=os.environ['NUMBER'], labels=['bug'])
       env:
         NUMBER: ${{ github.event.issue.number }}
