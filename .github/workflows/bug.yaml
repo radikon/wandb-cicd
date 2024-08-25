@@ -2,19 +2,50 @@ name: WandB CI/CD Bug Test
 
 on:
   issue_comment:
-    types: [created, edited, deleted]
+  # type:
+  #   - created, edited, deleted
+
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
   job01:
-    if: contains(github.event.comment.html_url, '/pull/')    # check if the comments come from pull request, exclude those from issue.
+    name: watch pull requests for bug comment
+    #if: containe(github.event.comment.html_url, '/pull/') #check if the comments come from pull request, exclude those from issue.
+    if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '/bug')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: find bug in comment
-        if: contains(github.event.comment.body, '/bug') # check the comment if it contains the keywords
-        run: |
-          gh api \
-          --method POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          /repos/radikon/wandb-cicd/issues/ISSUE_NUMBER/labels \
-          -f "labels[]=bug" -f "labels[]=enhancement"
+
+    #   - name: find bug in comment
+    # if: contains(github.event.comment.body, '/bug') #check the comment if it contains the keywords
+
+    - name: install dependencies
+      run: pip install ghapi
+
+    - name: see payload # this step is for debugging pusposes only, so you can see the payload.
+      run: echo 'PAYLOAD:\N${PAYLOAD}\N'
+      env:
+        PAYLOAD: ${{ toJSON(github.event) }}
+
+    - name: Make a comment
+      shell: python
+      run: |
+        import os
+        from ghapi.core import GhApi
+        owner.repo = os.envron['REPO'].split('/')
+        api = GhApi(owner=owner, repo=repo)
+        api.issues.add_labels(issue_number=os.environ(['NUMBER'], labels=['bug'])
+      env:
+        NUMBER: ${{ github.event.issue.number }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPO: ${{ github.repository }}
+
+
+    # run: |
+    #     gh api \
+    #     --method POST \
+    #     -H "Accept: application/vnd.github+json" \
+    #     -H "X-GitHub-Api-Version: 2022-11-28" \
+    #     /repos/radikon/wandb-cicd/issues/ISSUE_NUMBER/labels \
+    #     -f "labels[]=bug"
