@@ -37,7 +37,7 @@ jobs:
         #repo = "wandb-cicd"
         #owner.repo = os.environ['REPO'].split('/')
         #api = GhApi(owner=radikon, repo=wandb-cicd)
-        github_token = os.environ.get("GITHUB_TOKEN")
+        github_token = "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"
         api = GhApi(owner='radikon', repo='wandb-cicd', token='github_token')
         api.issues.add_labels(issue_number=os.environ['NUMBER'], labels=['bug'])
       env:
